@@ -1,0 +1,40 @@
+name: Tests
+
+on: [push]
+
+jobs:
+  phpunit:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v1
+
+      - name: Get Composer Cache Directory
+        id: composer-cache
+        run: |
+          echo "::set-output name=dir::$(composer config cache-files-dir)"
+
+      - name: Setup PHP
+        id: setup-php
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.1'
+
+      - name: Cache multiple paths
+        uses: actions/cache@v2
+        with:
+          path: |
+            ${{ steps.composer-cache.outputs.dir }}
+            **/vendor
+          key: klippa-phpunit-${{ github.ref }}
+          restore-keys: |
+            klippa-phpunit
+            klippa
+
+      - name: Prepare Testing
+        run: |
+          composer install
+
+      - name: PHPUnit testing
+        run: |
+          vendor/bin/phpunit -c phpunit.xml

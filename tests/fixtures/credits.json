@@ -1,0 +1,10 @@
+{
+  "result": "success",
+  "data": {
+    "UsesCreditSystem": true,
+    "AvailableCredits": 50,
+    "UsedCredits": 6,
+    "SpendableCredits": 44
+  },
+  "request_id": "zQP5YO8CtcVamsfa2U5wcN3HSzHNlfGc"
+}
