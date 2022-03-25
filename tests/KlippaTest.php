@@ -36,13 +36,13 @@ class KlippaTest extends TestCase
 
     public function testItCanScanDocumentFromBase64(): void
     {
-        $document = $this->klippa->parseDocumentByBase64('foo');
+        $document = $this->klippa->parseDocumentFromBase64('foo');
         $this->assertDocument($document);
     }
 
     public function testItCanScanDocumentFromUrl(): void
     {
-        $document = $this->klippa->parseDocumentByUrl('https://some.url');
+        $document = $this->klippa->parseDocumentFromUrl('https://some.url');
         $this->assertDocument($document);
     }
 
@@ -64,7 +64,7 @@ class KlippaTest extends TestCase
         $this->expectException(RequestFailedException::class);
         $this->expectExceptionMessage('server fault');
 
-        $klippa->parseDocumentByBase64('');
+        $klippa->parseDocumentFromBase64('');
     }
 
     public function testItCanHandleInvalidPayload(): void
@@ -75,7 +75,7 @@ class KlippaTest extends TestCase
         $this->expectException(ResponseCouldNotBeParsedException::class);
         $this->expectExceptionMessage('Undefined array key "barcodes"');
 
-        $klippa->parseDocumentByUrl('');
+        $klippa->parseDocumentFromUrl('');
     }
 
     private function assertDocument(Financial $document): void

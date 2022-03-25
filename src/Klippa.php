@@ -3,6 +3,7 @@
 namespace ITExperts\Klippa;
 
 use ITExperts\Klippa\Client\Client;
+use ITExperts\Klippa\Client\HttpClient;
 use ITExperts\Klippa\Credits\CreditsResult;
 use ITExperts\Klippa\ParsedDocument\Barcode\Barcode;
 use ITExperts\Klippa\ParsedDocument\Barcode\Type;
@@ -38,7 +39,7 @@ class Klippa
      * @param string $base64Content
      * @return Financial
      */
-    public function parseDocumentByBase64(string $base64Content): Financial
+    public function parseDocumentFromBase64(string $base64Content): Financial
     {
         $data = $this->client->parseDocumentFromBase64($base64Content);
 
@@ -49,7 +50,7 @@ class Klippa
      * @param string $url
      * @return Financial
      */
-    public function parseDocumentByUrl(string $url): Financial
+    public function parseDocumentFromUrl(string $url): Financial
     {
         $data = $this->client->parseDocumentFromUrl($url);
 
@@ -247,5 +248,15 @@ class Klippa
         }
 
         return $vatItems;
+    }
+
+    /**
+     * @param string $key
+     * @return static
+     */
+    public static function HttpClient(string $key): self
+    {
+        $client = new HttpClient($key);
+        return new self($client);
     }
 }
