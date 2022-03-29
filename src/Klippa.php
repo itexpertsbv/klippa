@@ -163,6 +163,7 @@ class Klippa
                 $data['vat_context'] ? VatContext::from($data['vat_context']) : null,
                 $data['vatamount'],
                 $vatItems,
+                json_encode($data)
             );
         } catch (\Throwable $e) {
             throw new ResponseCouldNotBeParsedException($e->getMessage(), $e->getCode());

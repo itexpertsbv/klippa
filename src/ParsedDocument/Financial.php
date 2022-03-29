@@ -105,6 +105,7 @@ class Financial
      * @param VatContext|null $vatContext
      * @param int|null $vatamount
      * @param VatItem[]|null $vatitems
+     * @param string|null $data
      */
     public function __construct(
         readonly public ?int $amount,
@@ -200,5 +201,6 @@ class Financial
         readonly public ?VatContext $vatContext,
         readonly public ?int $vatamount,
         readonly public ?array $vatitems,
+        readonly public ?string $data
     ){}
 }
