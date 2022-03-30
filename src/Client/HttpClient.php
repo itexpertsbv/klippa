@@ -3,6 +3,7 @@
 namespace ITExperts\Klippa\Client;
 
 use GuzzleHttp\Client as GuzzleClient;
+use GuzzleHttp\Psr7\Request;
 
 class HttpClient extends Client
 {
@@ -27,11 +28,13 @@ class HttpClient extends Client
      */
     public function credits(): array
     {
-        $response = $this->client->get('/credits');
+        $response = $this->client->get('credits');
 
-        $this->validateResponse($response);
+        $payload = $response->getBody()->getContents();
 
-        $data = json_decode($response->getBody()->getContents(), true, 512, JSON_THROW_ON_ERROR);
+        $this->validateResponse($payload, $response->getStatusCode(), $response->getReasonPhrase());
+
+        $data = json_decode($payload, true, 512, JSON_THROW_ON_ERROR);
 
         return $data['data'];
     }
@@ -46,17 +49,19 @@ class HttpClient extends Client
             'pdf_text_extraction' => 'full',
             'document' => $base64Content
         ];
-        
+
         $response = $this->client->post(
-            '/parseDocument',
+            'parseDocument',
             [
-                'body' => json_encode($parameters)
+                'json' => $parameters
             ]
         );
 
-        $this->validateResponse($response);
+        $payload = $response->getBody()->getContents();
 
-        $data = json_decode($response->getBody()->getContents(), true, 512, JSON_THROW_ON_ERROR);
+        $this->validateResponse($payload, $response->getStatusCode(), $response->getReasonPhrase());
+
+        $data = json_decode($payload, true, 512, JSON_THROW_ON_ERROR);
 
         return $data['data'];
     }
@@ -73,15 +78,17 @@ class HttpClient extends Client
         ];
 
         $response = $this->client->post(
-            '/parseDocument',
+            'parseDocument',
             [
-                'body' => json_encode($parameters)
+                'json' => $parameters
             ]
         );
 
-        $this->validateResponse($response);
+        $payload = $response->getBody()->getContents();
 
-        $data = json_decode($response->getBody()->getContents(), true, 512, JSON_THROW_ON_ERROR);
+        $this->validateResponse($payload, $response->getStatusCode(), $response->getReasonPhrase());
+
+        $data = json_decode($payload, true, 512, JSON_THROW_ON_ERROR);
 
         return $data['data'];
     }

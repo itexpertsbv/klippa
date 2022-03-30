@@ -14,8 +14,7 @@ class FailingClient extends Client
     {
         $data = '';
 
-        $response = new Response(200, [], '');
-        $this->validateResponse($response);
+        $this->validateResponse($data, 200, '');
 
         $data = \json_decode($data, true, 512, JSON_THROW_ON_ERROR);
 
@@ -28,9 +27,8 @@ class FailingClient extends Client
     public function parseDocumentFromBase64(string $base64Content): array
     {
         $data = file_get_contents('tests/fixtures/invoice.json');
-        $response = new Response(501, [], $data, '1.1', 'server fault');
 
-        $this->validateResponse($response);
+        $this->validateResponse($data, 501, 'server fault');
 
         $data = \json_decode($data, true, 512, JSON_THROW_ON_ERROR);
 

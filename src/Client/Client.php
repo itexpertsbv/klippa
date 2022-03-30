@@ -2,8 +2,6 @@
 
 namespace ITExperts\Klippa\Client;
 
-use Psr\Http\Message\ResponseInterface;
-
 abstract class Client
 {
     /**
@@ -24,25 +22,34 @@ abstract class Client
     abstract public function parseDocumentFromUrl(string $url): array;
 
     /**
-     * @param ResponseInterface $response
+     * @param string $response
+     * @param int $statusCode
+     * @param string $reasonPhrase
      * @return void
-     * @throws RequestFailedException
      * @throws JsonDecodeFailedException
+     * @throws RequestFailedException
      */
-    protected function validateResponse(ResponseInterface $response): void
+    protected function validateResponse(string $response, int $statusCode, string $reasonPhrase): void
     {
+        if ($statusCode >= 400) {
+            throw new RequestFailedException(
+                $reasonPhrase,
+                $statusCode,
+                null
+            );
+        }
+
         try {
-            $data = json_decode($response->getBody()->getContents(), true, 512, JSON_THROW_ON_ERROR);
+            $data = json_decode($response, true, 512, JSON_THROW_ON_ERROR);
         } catch (\JsonException $e) {
             throw new JsonDecodeFailedException($e->getMessage(), $e->getCode());
         }
 
-        if ($data['result'] !== 'success' || $response->getStatusCode() >= 400) {
+        if ($data['result'] !== 'success') {
             throw new RequestFailedException(
-                $data['message'] ?? $response->getReasonPhrase(),
-                $data['code'] ??
-                $response->getStatusCode(),
-                $data['request_id'] ?? null
+                $data['message'],
+                $data['code'],
+                $data['request_id']
             );
         }
     }

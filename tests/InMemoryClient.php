@@ -14,8 +14,7 @@ class InMemoryClient extends Client
     {
         $data = file_get_contents('tests/fixtures/credits.json');
 
-        $response = new Response(200, [], $data);
-        $this->validateResponse($response);
+        $this->validateResponse($data, 200, '');
 
         $data = \json_decode($data, true, 512, JSON_THROW_ON_ERROR);
 
@@ -28,9 +27,8 @@ class InMemoryClient extends Client
     public function parseDocumentFromBase64(string $base64Content): array
     {
         $data = file_get_contents('tests/fixtures/invoice.json');
-        $response = new Response(200, [], $data);
 
-        $this->validateResponse($response);
+        $this->validateResponse($data, 200, '');
 
         $data = \json_decode($data, true, 512, JSON_THROW_ON_ERROR);
 
@@ -44,8 +42,7 @@ class InMemoryClient extends Client
     {
         $data = file_get_contents('tests/fixtures/invoice.json');
 
-        $response = new Response(200, [], $data);
-        $this->validateResponse($response);
+        $this->validateResponse($data, 200, '');
 
         $data = \json_decode($data, true, 512, JSON_THROW_ON_ERROR);
 
